@@ -136,6 +136,7 @@ export const ChartCandle = () => {
               value={interval}
               onChange={onIntervalChange}
             >
+              <MenuItem value={"1_minute"}>1 minute</MenuItem>
               <MenuItem value={"15_minute"}>15 minute</MenuItem>
               <MenuItem value={"30_minute"}>30 minute</MenuItem>
               <MenuItem value={"1_hour"}>1 hour</MenuItem>

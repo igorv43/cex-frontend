@@ -83,7 +83,7 @@ export const Trade = () => {
                   )}
 
                   <StyledTableCell align="right">
-                    {row.Amount.toLocaleString("en-IN")}
+                    {row.Amount?.toLocaleString("en-IN")}
                   </StyledTableCell>
                   <StyledTableCell align="right">
                     {getHoursAndMinutes(new Date(row.createdAt))}
