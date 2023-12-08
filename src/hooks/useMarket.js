@@ -63,5 +63,21 @@ export default function useMarket() {
       // msgType = "error";
     }
   }
-  return { buy, sell, find };
+  async function findOpenOrders() {
+    try {
+      const data = await api
+        .get("/market/findOpenOrders", {
+          headers: { Authorization: `Bearer ${JSON.parse(token)}` },
+        })
+        .then((response) => {
+          return response.data;
+        });
+      return data;
+    } catch (error) {
+      console.log(error);
+      // msgText = error?.response?.data?.message;
+      // msgType = "error";
+    }
+  }
+  return { buy, sell, find, findOpenOrders };
 }

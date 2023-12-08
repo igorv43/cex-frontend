@@ -1,14 +1,11 @@
 import Chart from "react-apexcharts";
-import { useEffect, useState, useContext, useCallback } from "react";
-import useChart from "../hooks/useChart";
+import { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
-import Box from "@mui/material/Box";
 import CardContent from "@mui/material/CardContent";
-//import { context as socketMarketContex } from "../context/SocketMarketContext";
 import Grid from "@mui/material/Grid";
 import { io } from "socket.io-client";
 import candle from "../utils/candle";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -19,13 +16,10 @@ const socket = io("http://localhost:5000");
  * @param {data} props
  * @returns
  */
-let globalCandlestickPage = [];
 let globalInterval = "15_minute";
 export const ChartCandle = () => {
-  const [data, setData] = useState([]);
   const [symbol, setSymbol] = useState("LUNC/USDT");
   const [interval, setInterval] = useState("15_minute");
-  const { getCandles } = useChart();
   const [candlestick, setCandlestick] = useState([]);
 
   function onSymbolChange(event) {
@@ -41,7 +35,6 @@ export const ChartCandle = () => {
     globalInterval = event.target.value;
     setInterval(event.target.value);
     setCandlestick([]);
-    globalCandlestickPage = [];
 
     socket.emit("candlestick", {
       Denom: symbol,
@@ -57,44 +50,16 @@ export const ChartCandle = () => {
         Interval: interval,
       });
     }
-    // console.log("candlestick_" + symbol + "_" + interval);
+
     socket.on("candlestick", (list) => {
-      //if (Denom === aDenom && Intervalx === globalInterval) {
       const candles = list.map((k) => {
         return new candle(k._id.time, k.open, k.high, k.low, k.close);
       });
-      console.log(list);
-      setCandlestick(candles);
-      // }
 
-      // if (globalCandlestickPage.length === 0) {
-      //   globalCandlestickPage = candles;
-      //   setCandlestick(globalCandlestickPage);
-      // } else {
-      //   if (candles.length === 1) {
-      //     if (
-      //       globalCandlestickPage[globalCandlestickPage.length - 1].y[0] ===
-      //       candles[0].y[0]
-      //     ) {
-      //       // globalCandlestickPage.shift();
-      //       globalCandlestickPage[globalCandlestickPage.length - 1].y[0] =
-      //         candles[0];
-      //       // globalCandlestickPage.push(candles[0]);
-      //       console.log("xx ", globalCandlestickPage.length);
-      //       //setCandlestick(candlestick);
-      //       setCandlestick(globalCandlestickPage);
-      //     } else {
-      //       globalCandlestickPage.push(candles[0]);
-      //       setCandlestick(globalCandlestickPage);
-      //     }
-      //   }
-      // }
+      setCandlestick(candles);
     });
-    //JSON.stringify(candlestick)
   }, []);
-  //console.log("inbterval: ", candlestick);
-  //executeCandlestick(symbol, interval);
-  //incrementSocket();
+
   const series = [
     {
       data: candlestick,

@@ -1,185 +1,89 @@
 import * as React from "react";
 import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
 import useMarket from "../hooks/useMarket";
-import { useCallback, useEffect } from "react";
-import { Card, CardContent } from "@mui/material";
-
-interface Column {
-  id: "Denom" | "Amount" | "Price" | "Type" | "Status" | "createdAt";
-  label: string;
-  minWidth?: number;
-  align?: "right";
-  format?: (value: number) => string;
-}
-
-const columns: readonly Column[] = [
-  { id: "Denom", label: "Denom", minWidth: 50 },
-  {
-    id: "Amount",
-    label: "Amount",
-    minWidth: 170,
-    align: "right",
-    format: (value: number) => value.toLocaleString("en-US"),
-  },
-  {
-    id: "Price",
-    label: "Price",
-    minWidth: 170,
-    align: "right",
-    format: (value: number) => value.toLocaleString("en-US"),
-  },
-  { id: "Type", label: "Type", minWidth: 100 },
-  { id: "Status", label: "Status", minWidth: 100 },
-  { id: "createdAt", label: "createdAt", minWidth: 100 },
-];
-
-interface Data {
-  _id: string;
-  Denom: string;
-  Amount: number;
-  Price: number;
-  Type: string;
-  Status: string;
-
-  createdAt: string;
-}
-
-function createData(
-  _id: string,
-  Denom: string,
-  Amount: number,
-  Price: number,
-  Type: string,
-  Status: string,
-
-  createdAt: string
-): Data {
-  createdAt = getHoursAndMinutes(new Date(createdAt));
-  return { _id, Denom, Amount, Price, Type, Status, createdAt };
-}
-function getHoursAndMinutes(date = new Date()) {
-  return (
-    padTo2Digits(date.getFullYear()) +
-    "-" +
-    padTo2Digits(date.getMonth()) +
-    "-" +
-    padTo2Digits(date.getDay()) +
-    " " +
-    padTo2Digits(date.getHours()) +
-    ":" +
-    padTo2Digits(date.getMinutes()) +
-    ":" +
-    padTo2Digits(date.getSeconds())
-  );
-}
-function padTo2Digits(num: any) {
-  return String(num).padStart(2, "0");
-}
+import { useCallback, useContext, useEffect } from "react";
+import Box from "@mui/material/Box";
+import Tab from "@mui/material/Tab";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
+import { Orders } from "./Orders";
+import { context } from "../context/UserContext";
+import { io } from "socket.io-client";
+const socket = io("http://localhost:5000");
 export default function Market() {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [rows, setRows] = React.useState([]);
-  const { find } = useMarket();
-
+  const [rows, setRows] = React.useState<any[]>([]);
+  const [rowsOpenOrders, setRowsOpenOrders] = React.useState<any[]>([]);
+  const [value, setValue] = React.useState("1");
+  const { find, findOpenOrders } = useMarket();
+  const { user: userAut } = useContext(context);
+  const [userSocket, setUserSocket] = React.useState(false);
   const incrementfind = useCallback(() => {
     const objDenom = async () => {
       const data = await find();
       if (data) {
         setRows(data);
-        // const rowsx = data.forEach((x: Data) => {
-        //   const px = createData(
-        //     x._id,
-        //     x.Denom,
-        //     x.Amount,
-        //     x.Price,
-        //     x.Type,
-        //     x.Status,
-        //     x.createdAt
-        //   );
-
-        // });
+      }
+    };
+    objDenom().catch(console.error);
+  }, []);
+  const incrementfindOpenOrders = useCallback(() => {
+    const objDenom = async () => {
+      const data = await findOpenOrders();
+      if (data) {
+        setRowsOpenOrders(data);
       }
     };
     objDenom().catch(console.error);
   }, []);
   useEffect(() => {
-    incrementfind();
-  }, [incrementfind]);
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
+    incrementfindOpenOrders();
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+    if (userAut.userId != null) {
+      if (!userSocket) {
+        console.log("autenticado", userAut);
+        socket.emit("alertUser", userAut.userId);
+        socket.on("alertUser", (obj) => {
+          if (obj.type === "market") {
+            incrementfindOpenOrders();
+          }
+        });
+        setUserSocket(true);
+      }
+    }
+  }, [userAut]);
 
+  const handleChangex = (event: any, newValue: any) => {
+    setValue(newValue);
+    if (newValue == 2) {
+      incrementfind();
+    } else {
+      incrementfindOpenOrders();
+    }
+  };
+  // global._io
+  // .to(market01.User._id)
+  // .emit("alertUser", { type: "market", data: market01 });
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <Card sx={{ minWidth: 275 }}>
-        <CardContent>
-          <TableContainer sx={{ maxHeight: 440 }}>
-            <Table stickyHeader aria-label="sticky table" size="small">
-              <TableHead>
-                <TableRow>
-                  {columns.map((column) => (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{ minWidth: column.minWidth }}
-                    >
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row: any) => {
-                    return (
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1}
-                        key={row._id}
-                      >
-                        {columns.map((column) => {
-                          const value = row[column.id];
-                          return (
-                            <TableCell key={column.id} align={column.align}>
-                              {column.format && typeof value === "number"
-                                ? column.format(value)
-                                : value}
-                            </TableCell>
-                          );
-                        })}
-                      </TableRow>
-                    );
-                  })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          <TablePagination
-            rowsPerPageOptions={[10, 25, 100]}
-            component="div"
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </CardContent>
-      </Card>
-    </Paper>
+    <>
+      <Paper sx={{ width: "100%", overflow: "hidden" }}>
+        <Box sx={{ width: "100%", typography: "body1" }}>
+          <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <TabList onChange={handleChangex}>
+                <Tab label="Open Orders" value="1" />
+                <Tab label="Orders History" value="2" />
+              </TabList>
+            </Box>
+            <TabPanel value="1">
+              <Orders rows={rowsOpenOrders} />
+            </TabPanel>
+            <TabPanel value="2">
+              <Orders rows={rows} />
+            </TabPanel>
+          </TabContext>
+        </Box>
+      </Paper>
+    </>
   );
 }

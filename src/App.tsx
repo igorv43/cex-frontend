@@ -31,7 +31,7 @@ function App() {
               {/* <Grid item xs={12} md={3} mb={1}>
                 <Box></Box>
               </Grid> */}
-              <Grid item xs={12} md={7} mb={1}>
+              <Grid item xs={12} md={9} mb={1}>
                 {/* Componente trade */}
                 <ChartCandle />
                 <Box>
@@ -44,7 +44,7 @@ function App() {
                   </Grid>
                 </Box>
               </Grid>
-              <Grid item xs={12} md={5} mb={1}>
+              <Grid item xs={12} md={3} mb={1}>
                 <Grid item xs={12} md={12} mb={1}>
                   <Login values={""} />
                 </Grid>
@@ -55,7 +55,7 @@ function App() {
                         <Grid
                           item
                           xs={12}
-                          md={6}
+                          md={12}
                           mb={1}
                           sx={{ background: "#F7FFF8" }}
                         >
@@ -72,7 +72,7 @@ function App() {
                         <Grid
                           item
                           xs={12}
-                          md={6}
+                          md={12}
                           mb={1}
                           sx={{ background: "#FEF6F4" }}
                         >
