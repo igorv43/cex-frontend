@@ -12,9 +12,11 @@ import { context as socketMarketContex } from "../context/SocketMarketContext";
 import useCoinUser from "../hooks/useCoinUser";
 import Divider from "@mui/material/Divider";
 import Withdraw from "./Withdraw";
+import Swap from "./Swap";
 export const Sell = () => {
   const { findDenom } = useCoinUser();
   const [open, setOpen] = useState(false);
+  const [openSwap, setOpenSwap] = useState(false);
   const { autheticated } = useContext(context);
   const { sell } = useMarket();
   const [market, setMarket] = useState({});
@@ -61,10 +63,16 @@ export const Sell = () => {
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
+  const handleCloseSwap = () => {
+    setOpenSwap(false);
+  };
+  const handleClickOpenSwap = () => {
+    setOpenSwap(true);
+  };
+
   const { coin, setCoinPair1, setCoinPair2, coinPair2 } =
     useContext(socketMarketContex);
   const [amountPair, setAmountPair] = useState(0);
@@ -181,6 +189,14 @@ export const Sell = () => {
             </Button>{" "}
             <Button
               size="small"
+              color="info"
+              variant="contained"
+              onClick={handleClickOpenSwap}
+            >
+              Swap
+            </Button>{" "}
+            <Button
+              size="small"
               color="success"
               variant="contained"
               onClick={handleClickOpen}
@@ -256,6 +272,13 @@ export const Sell = () => {
           Sell LUNC
         </Button>
       </Box>
+      <Swap
+        handleClickOpen={handleClickOpenSwap}
+        handleClose={handleCloseSwap}
+        open={openSwap}
+        offerDenom="LUNC"
+        askDenom="USDT"
+      />
       <Withdraw
         handleClickOpen={handleClickOpen}
         handleClose={handleClose}

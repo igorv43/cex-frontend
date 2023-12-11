@@ -114,7 +114,7 @@ export const ChartCandle = () => {
             series={series}
             type="candlestick"
             width={"100%"}
-            height={420}
+            height={400}
           />
         </CardContent>
       </Card>

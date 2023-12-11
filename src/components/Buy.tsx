@@ -11,6 +11,7 @@ import useMarket from "../hooks/useMarket";
 import useCoinUser from "../hooks/useCoinUser";
 import React from "react";
 import { context as socketMarketContex } from "../context/SocketMarketContext";
+import Swap from "./Swap";
 export const Buy = () => {
   const { autheticated } = useContext(context);
   const { coin, setCoinPair1, coinPair1, setCoinPair2 } =
@@ -23,6 +24,7 @@ export const Buy = () => {
   const [typeN, setTypeN] = useState("limit");
   const [errInput, setErrInput] = useState({ input: false, text: "" });
   const [valueInputPrice, setValueInputPrice] = useState(0);
+  const [open, setOpen] = useState(false);
   const [inputEvent, setInputEvent] = useState({
     label: "USDT price",
     variant: "filled" as any,
@@ -123,6 +125,13 @@ export const Buy = () => {
   useEffect(() => {
     incrementfindDenom();
   }, [incrementfindDenom]);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -150,94 +159,112 @@ export const Buy = () => {
     }
   };
   return (
-    <Box component="form" name="buy" onSubmit={handleSubmit} noValidate>
-      <Grid container spacing={0}>
-        <Grid item xs={12}>
-          <Button
-            size="small"
-            variant="outlined"
-            color={inputEvent.buttonColorLimit}
-            onClick={handleChangeTypeLimit}
-          >
-            Limit
-          </Button>{" "}
-          <Button
-            size="small"
-            variant="outlined"
-            color={inputEvent.buttonColorMarket}
-            onClick={handleChangeTypeMarket}
-          >
-            Market
-          </Button>
-          <Box
-            sx={{
-              "& > :not(style)": { m: 1, width: "100%" },
-            }}
-          >
-            <FormHelperText id="component-helper-text">
-              Available{" "}
-              {typeof coinPair1?.Amount === "number"
-                ? coinPair1?.Amount.toLocaleString("en-IN")
-                : null}{" "}
-              USDT
-            </FormHelperText>
-
-            <TextField
-              id="price"
-              name="price"
+    <>
+      {" "}
+      <Box component="form" name="buy" onSubmit={handleSubmit} noValidate>
+        <Grid container spacing={0}>
+          <Grid item xs={12}>
+            <Button
               size="small"
-              type="number"
-              label={inputEvent.label}
-              disabled={inputEvent.disabled}
-              value={valueInputPrice}
-              onChange={handleChangePrice}
-            />
-          </Box>
-        </Grid>
-
-        <Grid item xs={12}>
-          <Box
-            sx={{
-              "& > :not(style)": { m: 1, width: "100%" },
-            }}
-          >
-            <TextField
-              error={errInput.input}
-              id="amount"
-              name="amount"
-              type="number"
+              variant="outlined"
+              color={inputEvent.buttonColorLimit}
+              onClick={handleChangeTypeLimit}
+            >
+              Limit
+            </Button>{" "}
+            <Button
               size="small"
-              inputProps={{
-                step: 1,
-                min: 1,
+              variant="outlined"
+              color={inputEvent.buttonColorMarket}
+              onClick={handleChangeTypeMarket}
+            >
+              Market
+            </Button>{" "}
+            <Button
+              size="small"
+              color="info"
+              variant="contained"
+              onClick={handleClickOpen}
+            >
+              Swap
+            </Button>
+            <Box
+              sx={{
+                "& > :not(style)": { m: 1, width: "100%" },
               }}
-              label="Amount USDT"
-              disabled={!autheticated}
-              onChange={handleChange}
-              helperText={errInput.text}
-              value={valueInput}
-            />
+            >
+              <FormHelperText id="component-helper-text">
+                Available{" "}
+                {typeof coinPair1?.Amount === "number"
+                  ? coinPair1?.Amount.toLocaleString("en-IN")
+                  : null}{" "}
+                USDT
+              </FormHelperText>
 
-            <FormHelperText id="component-helper-text">
-              Max. Buy{" "}
-              {typeof amountPair === "number"
-                ? amountPair.toLocaleString("en-IN")
-                : null}{" "}
-              LUNC
-            </FormHelperText>
-          </Box>
+              <TextField
+                id="price"
+                name="price"
+                size="small"
+                type="number"
+                label={inputEvent.label}
+                disabled={inputEvent.disabled}
+                value={valueInputPrice}
+                onChange={handleChangePrice}
+              />
+            </Box>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Box
+              sx={{
+                "& > :not(style)": { m: 1, width: "100%" },
+              }}
+            >
+              <TextField
+                error={errInput.input}
+                id="amount"
+                name="amount"
+                type="number"
+                size="small"
+                inputProps={{
+                  step: 1,
+                  min: 1,
+                }}
+                label="Amount USDT"
+                disabled={!autheticated}
+                onChange={handleChange}
+                helperText={errInput.text}
+                value={valueInput}
+              />
+
+              <FormHelperText id="component-helper-text">
+                Max. Buy{" "}
+                {typeof amountPair === "number"
+                  ? amountPair.toLocaleString("en-IN")
+                  : null}{" "}
+                LUNC
+              </FormHelperText>
+            </Box>
+          </Grid>
         </Grid>
-      </Grid>
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        color="success"
-        sx={{ mt: 3, mb: 2 }}
-        disabled={autheticated ? errInput.input : autheticated}
-      >
-        Buy LUNC
-      </Button>
-    </Box>
+        <Button
+          type="submit"
+          fullWidth
+          variant="contained"
+          color="success"
+          sx={{ mt: 3, mb: 2 }}
+          disabled={autheticated ? errInput.input : autheticated}
+        >
+          Buy LUNC
+        </Button>
+      </Box>
+      <Swap
+        handleClickOpen={handleClickOpen}
+        handleClose={handleClose}
+        open={open}
+        offerDenom="USDT"
+        askDenom="LUNC"
+      />
+    </>
   );
 };

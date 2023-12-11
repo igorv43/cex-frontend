@@ -27,13 +27,23 @@ function App() {
               <Grid item xs={12} md={12} mb={1}>
                 <CoinPrice />
               </Grid>
-
-              {/* <Grid item xs={12} md={3} mb={1}>
-                <Box></Box>
-              </Grid> */}
               <Grid item xs={12} md={9} mb={1}>
-                {/* Componente trade */}
                 <ChartCandle />
+              </Grid>
+              <Grid item xs={12} md={3} mb={1} sx={{ minHeight: 400 }}>
+                <Grid
+                  item
+                  xs={12}
+                  md={12}
+                  mb={1}
+                  sx={{ background: "#FFFFFF", minHeight: 510 }}
+                >
+                  <Trade />
+                </Grid>
+              </Grid>
+              <Grid item xs={12} md={7} mb={1}>
+                {/* Componente trade */}
+
                 <Box>
                   <Grid container mb={12} spacing={2}>
                     <Grid item xs={12} md={12} mb={1}>
@@ -44,10 +54,7 @@ function App() {
                   </Grid>
                 </Box>
               </Grid>
-              <Grid item xs={12} md={3} mb={1}>
-                <Grid item xs={12} md={12} mb={1}>
-                  <Login values={""} />
-                </Grid>
+              <Grid item xs={12} md={5} mb={1}>
                 <Grid item xs={12} md={12} mb={1}>
                   <Card>
                     <CardContent>
@@ -55,9 +62,9 @@ function App() {
                         <Grid
                           item
                           xs={12}
-                          md={12}
+                          md={6}
                           mb={1}
-                          sx={{ background: "#F7FFF8" }}
+                          sx={{ background: "#F7FFF8", minHeight: 510 }}
                         >
                           <Box
                             sx={{
@@ -72,7 +79,7 @@ function App() {
                         <Grid
                           item
                           xs={12}
-                          md={12}
+                          md={6}
                           mb={1}
                           sx={{ background: "#FEF6F4" }}
                         >
@@ -89,7 +96,6 @@ function App() {
                     </CardContent>
                   </Card>
                 </Grid>
-                <Trade />
               </Grid>
             </Grid>
           </Container>

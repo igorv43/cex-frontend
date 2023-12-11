@@ -115,7 +115,6 @@ const Withdraw: React.FC<Props> = ({ handleClickOpen, handleClose, open }) => {
               autoFocus
               onChange={handleChangeAmount}
               value={maxAvailable}
-              
               endAdornment={
                 <InputAdornment position="end">
                   {" "}

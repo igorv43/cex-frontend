@@ -42,8 +42,10 @@ const Login: React.FC<Props> = ({ values }) => {
   return (
     <>
       {autheticated ? (
-        <Card sx={{ minWidth: 275 }}>
-          <CardContent>
+        // <Card sx={{ minWidth: 275 }}>
+        //   <CardContent>
+        <Grid container spacing={0}>
+          <Grid item xs={10}>
             <Typography
               sx={{ fontSize: 14 }}
               color="text.secondary"
@@ -63,85 +65,59 @@ const Login: React.FC<Props> = ({ values }) => {
             >
               Memo: {userAut.userId}
             </Typography>
-            <button onClick={logout}>logout</button>
-          </CardContent>
-        </Card>
+          </Grid>
+          <Grid item xs={2}>
+            <Button
+              onClick={logout}
+              size="small"
+              variant="contained"
+              color="warning"
+            >
+              logout
+            </Button>
+          </Grid>
+        </Grid>
       ) : (
         <>
-          <Card sx={{ minWidth: 275 }}>
-            <CardContent>
-              <Container>
+          <Grid container spacing={0}>
+            <Grid item xs={10}>
+              <Box component="form" onSubmit={handleSubmit} noValidate>
                 <Menssage />
-                <Box
-                  sx={{
-                    marginTop: 0,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography component="h3" variant="h5">
-                    Sign in {autheticated}
-                  </Typography>
-                  <Box
-                    component="form"
-                    onSubmit={handleSubmit}
-                    noValidate
-                    sx={{ mt: 1 }}
-                  >
-                    <TextField
-                      margin="normal"
-                      size="small"
-                      required
-                      fullWidth
-                      id="email"
-                      label="Email Address"
-                      name="email"
-                      autoFocus
-                      onChange={handleChange}
-                    />
-                    <TextField
-                      margin="normal"
-                      required
-                      fullWidth
-                      size="small"
-                      name="password"
-                      label="Password"
-                      type="password"
-                      id="password"
-                      onChange={handleChange}
-                    />
-
-                    <Button
-                      type="submit"
-                      fullWidth
-                      size="small"
-                      variant="contained"
-                      sx={{ mt: 3, mb: 2 }}
-                    >
-                      Sign In
-                    </Button>
-                    <Grid container>
-                      {/* <Grid item xs>
+                <TextField
+                  size="small"
+                  required
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoFocus
+                  onChange={handleChange}
+                />{" "}
+                <TextField
+                  required
+                  size="small"
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  onChange={handleChange}
+                />{" "}
+                <Button type="submit" size="small" variant="contained">
+                  Sign In
+                </Button>
+                {/* <Grid item xs>
                     <Link href="#" variant="body2">
                       Forgot password?
                     </Link>
                   </Grid> */}
-                      <Grid item>
-                        <Link
-                          href="#"
-                          variant="body2"
-                          onClick={handleClickOpen}
-                        >
-                          {"Don't have an account?"}
-                        </Link>
-                      </Grid>
-                    </Grid>
-                  </Box>
-                </Box>
-              </Container>
-            </CardContent>
-          </Card>
+              </Box>
+            </Grid>
+            <Grid item xs={2}>
+              <Link href="#" variant="body2" onClick={handleClickOpen}>
+                {"Don't have an account?"}
+              </Link>
+            </Grid>
+          </Grid>
+
           <CreateUser
             handleClickOpen={handleClickOpen}
             handleClose={handleClose}

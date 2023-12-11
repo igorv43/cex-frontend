@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { context as socketMarketContex } from "../context/SocketMarketContext";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import TrendingDownIcon from "@mui/icons-material/TrendingDown";
+import Login from "./Login";
 let priceDefault = 0;
 export const CoinPrice = () => {
   const { executePriceCoin, coin, statusTrade } =
@@ -99,6 +100,10 @@ export const CoinPrice = () => {
               ? coin.TotalPriceSell.toFixed(2)
               : null}
           </Typography>
+        </Grid>
+        <Divider orientation="vertical" flexItem sx={{ minHeight: 20 }} />
+        <Grid item xs={12} md={4} mb={1} sx={{ margin: 1 }}>
+          <Login values={""} />
         </Grid>
       </Grid>
     </>
