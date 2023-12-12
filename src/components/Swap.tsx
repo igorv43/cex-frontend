@@ -153,7 +153,7 @@ const Swap: React.FC<Props> = ({
           </FormHelperText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>Close</Button>
           <Button onClick={handleSubmit}>Ok</Button>
         </DialogActions>
       </Dialog>

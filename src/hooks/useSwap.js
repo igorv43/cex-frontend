@@ -6,7 +6,7 @@ export default function useSwap() {
 
   const [token] = useState(localStorage.getItem("token") || "");
   async function switchCurrency(obj) {
-    let msgText = "sucessc";
+    let msgText = "success";
     let msgType = "success";
 
     try {
