@@ -9,14 +9,14 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import { styled } from "@mui/material/styles";
 import { useContext, useEffect } from "react";
 import { context as socketMarketContex } from "../context/SocketMarketContext";
-import { Box, Card } from "@mui/material";
-import { Height } from "@mui/icons-material";
+import { context as coinContex } from "../context/CoinContext";
 
 export const Trade = () => {
   let countMark = 0;
   const { executePriceMarket, market } = useContext(socketMarketContex);
+  const { symbol, denom } = useContext(coinContex);
   useEffect(() => {
-    executePriceMarket("LUNC/USDT");
+    executePriceMarket(symbol);
   }, []);
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -60,7 +60,7 @@ export const Trade = () => {
         <TableHead>
           <TableRow>
             <StyledTableCell>Price(USDT)</StyledTableCell>
-            <StyledTableCell align="right">Amount(LUNC)</StyledTableCell>
+            <StyledTableCell align="right">Amount({denom})</StyledTableCell>
             <StyledTableCell align="right">Hour</StyledTableCell>
           </TableRow>
         </TableHead>

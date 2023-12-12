@@ -13,6 +13,7 @@ import useCoinUser from "../hooks/useCoinUser";
 import Divider from "@mui/material/Divider";
 import Withdraw from "./Withdraw";
 import Swap from "./Swap";
+import { context as coinContex } from "../context/CoinContext";
 export const Sell = () => {
   const { findDenom } = useCoinUser();
   const [open, setOpen] = useState(false);
@@ -23,6 +24,7 @@ export const Sell = () => {
   const [valueInput, setValueInput] = useState(0);
   const [typeN, setTypeN] = useState("limit");
   const [valueInputPrice, setValueInputPrice] = useState(0);
+  const { symbol, denom } = useContext(coinContex);
   const [inputEvent, setInputEvent] = useState({
     label: "USDT price",
     variant: "filled" as any,
@@ -127,7 +129,7 @@ export const Sell = () => {
   };
   const incrementfindDenom = useCallback(() => {
     const objDenomx = async () => {
-      const data2 = await findDenom("LUNC");
+      const data2 = await findDenom(denom);
 
       if (data2) {
         setCoinPair2({ Amount: data2.Amount });
@@ -146,7 +148,7 @@ export const Sell = () => {
     if (coinPair2?.Amount === 0) {
       alert("insufficient amount");
     } else {
-      const xData = { ...market, denom: "LUNC/USDT" } as any;
+      const xData = { ...market, denom: symbol } as any;
       const dataSell = await sell(xData);
       setValueInput(0);
       if (dataSell?.data?.newMarket?.Denom) {
@@ -213,7 +215,7 @@ export const Sell = () => {
                 {typeof coinPair2?.Amount === "number"
                   ? coinPair2?.Amount.toLocaleString("en-IN")
                   : null}{" "}
-                LUNC
+                {denom}
               </FormHelperText>
               <TextField
                 id="price"
@@ -244,7 +246,7 @@ export const Sell = () => {
                   step: 1,
                   min: 1,
                 }}
-                label="Amount LUNC"
+                label={"Amount " + denom}
                 disabled={!autheticated}
                 onChange={handleChange}
                 helperText={errInput.text}
@@ -269,14 +271,14 @@ export const Sell = () => {
           sx={{ mt: 3, mb: 2 }}
           disabled={autheticated ? errInput.input : autheticated}
         >
-          Sell LUNC
+          Sell {denom}
         </Button>
       </Box>
       <Swap
         handleClickOpen={handleClickOpenSwap}
         handleClose={handleCloseSwap}
         open={openSwap}
-        offerDenom="LUNC"
+        offerDenom={denom}
         askDenom="USDT"
       />
       <Withdraw

@@ -17,7 +17,7 @@ import React, { useContext, useState } from "react";
 import { context } from "../context/UserContext";
 import { context as socketMarketContex } from "../context/SocketMarketContext";
 import Menssage from "./Message";
-
+import { context as coinContex } from "../context/CoinContext";
 type Props = {
   handleClickOpen: () => void;
   handleClose: () => void;
@@ -28,6 +28,7 @@ const Withdraw: React.FC<Props> = ({ handleClickOpen, handleClose, open }) => {
   const [withdraw, setWithdraw] = useState({});
   const { sendWithdraw } = useContext(context);
   const [maxAvailable, setMaxAvailable] = useState("");
+  const { symbol, denom } = useContext(coinContex);
   const { coin, setCoinPair1, setCoinPair2, coinPair2 } =
     useContext(socketMarketContex);
   const handleChange = (e: any) => {
@@ -50,7 +51,7 @@ const Withdraw: React.FC<Props> = ({ handleClickOpen, handleClose, open }) => {
     e.preventDefault();
     setWithdraw({
       ...withdraw,
-      ["denom"]: "LUNC",
+      ["denom"]: denom,
     });
     sendWithdraw(withdraw);
   };
@@ -67,7 +68,7 @@ const Withdraw: React.FC<Props> = ({ handleClickOpen, handleClose, open }) => {
             {typeof coinPair2?.Amount === "number"
               ? coinPair2?.Amount.toLocaleString("en-IN")
               : null}{" "}
-            LUNC
+            {denom}
           </FormHelperText>
           <TextField
             autoFocus
@@ -93,18 +94,7 @@ const Withdraw: React.FC<Props> = ({ handleClickOpen, handleClose, open }) => {
             variant="standard"
             onChange={handleChange}
           />
-          {/* <TextField
-            autoFocus
-            size="small"
-            name="amount"
-            margin="dense"
-            id="amount"
-            label="Amount"
-            type="number"
-            fullWidth
-            variant="standard"
-            onChange={handleChange}
-          /> */}
+
           <FormControl variant="standard" sx={{ width: "100%" }}>
             <InputLabel htmlFor="amount">Amount</InputLabel>
             <Input

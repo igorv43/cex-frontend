@@ -9,6 +9,7 @@ import { useCallback, useContext, useEffect, useState } from "react";
 import { context } from "../context/UserContext";
 import useMarket from "../hooks/useMarket";
 import useCoinUser from "../hooks/useCoinUser";
+import { context as coinContex } from "../context/CoinContext";
 import React from "react";
 import { context as socketMarketContex } from "../context/SocketMarketContext";
 import Swap from "./Swap";
@@ -21,6 +22,7 @@ export const Buy = () => {
   const [market, setMarket] = useState({});
   const [amountPair, setAmountPair] = useState(0);
   const [valueInput, setValueInput] = useState(0);
+  const { symbol, denom } = useContext(coinContex);
   const [typeN, setTypeN] = useState("limit");
   const [errInput, setErrInput] = useState({ input: false, text: "" });
   const [valueInputPrice, setValueInputPrice] = useState(0);
@@ -138,7 +140,7 @@ export const Buy = () => {
     if (coinPair1?.Amount === 0) {
       alert("insufficient amount");
     } else {
-      const xData = { ...market, denom: "LUNC/USDT" };
+      const xData = { ...market, denom: symbol };
       const dataSell = await buy(xData);
 
       if (dataSell?.data?.newMarket?.Denom) {
@@ -242,7 +244,7 @@ export const Buy = () => {
                 {typeof amountPair === "number"
                   ? amountPair.toLocaleString("en-IN")
                   : null}{" "}
-                LUNC
+                {denom}
               </FormHelperText>
             </Box>
           </Grid>
@@ -255,7 +257,7 @@ export const Buy = () => {
           sx={{ mt: 3, mb: 2 }}
           disabled={autheticated ? errInput.input : autheticated}
         >
-          Buy LUNC
+          Buy {denom}
         </Button>
       </Box>
       <Swap
@@ -263,7 +265,7 @@ export const Buy = () => {
         handleClose={handleClose}
         open={open}
         offerDenom="USDT"
-        askDenom="LUNC"
+        askDenom={denom}
       />
     </>
   );

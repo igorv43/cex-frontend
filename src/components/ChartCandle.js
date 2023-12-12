@@ -1,5 +1,5 @@
 import Chart from "react-apexcharts";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useContext } from "react";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
@@ -9,6 +9,7 @@ import Select from "@mui/material/Select";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
+import { context } from "../context/CoinContext";
 const socket = io("http://localhost:5000");
 
 /**
@@ -18,13 +19,14 @@ const socket = io("http://localhost:5000");
  */
 let globalInterval = "15_minute";
 export const ChartCandle = () => {
-  const [symbol, setSymbol] = useState("LUNC/USDT");
   const [interval, setInterval] = useState("15_minute");
   const [candlestick, setCandlestick] = useState([]);
-
+  const [listSymbol, setListSymbol] = useState([]);
+  const { find, symbol, setSymbol, denom, setDenom, splitSymbol } =
+    useContext(context);
   function onSymbolChange(event) {
-    //alert(event.target.value);
     setSymbol(event.target.value);
+    setDenom(splitSymbol(event.target.value));
     setCandlestick([]);
   }
   function onIntervalChange(event) {
@@ -41,9 +43,16 @@ export const ChartCandle = () => {
       Interval: event.target.value,
     });
   }
+  const incrementCallback = useCallback(() => {
+    const obj = async () => {
+      const data = await find();
 
+      setListSymbol(data);
+    };
+    obj().catch(console.error);
+  }, []);
   useEffect(() => {
-    console.log("conta: ", candlestick.length);
+    incrementCallback();
     if (candlestick.length == 0) {
       socket.emit("candlestick", {
         Denom: symbol,
@@ -89,7 +98,13 @@ export const ChartCandle = () => {
               value={symbol}
               onChange={onSymbolChange}
             >
-              <MenuItem value={"LUNC/USDT"}>LUNCUSDT</MenuItem>
+              {listSymbol.map((i) => {
+                return (
+                  <MenuItem value={i.Denom}>
+                    {i.Denom.replace("/", "")}
+                  </MenuItem>
+                );
+              })}
             </Select>
           </FormControl>
           <FormControl sx={{ m: 1, minWidth: 120 }} size="small">

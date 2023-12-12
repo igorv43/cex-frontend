@@ -4,14 +4,16 @@ import { useContext, useEffect, useState } from "react";
 import { context as socketMarketContex } from "../context/SocketMarketContext";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import TrendingDownIcon from "@mui/icons-material/TrendingDown";
+import { context as coinContex } from "../context/CoinContext";
 import Login from "./Login";
 let priceDefault = 0;
 export const CoinPrice = () => {
   const { executePriceCoin, coin, statusTrade } =
     useContext(socketMarketContex);
+  const { symbol, denom } = useContext(coinContex);
 
   useEffect(() => {
-    executePriceCoin("LUNC/USDT");
+    executePriceCoin(symbol);
   }, []);
 
   return (
@@ -19,7 +21,7 @@ export const CoinPrice = () => {
       <Grid container spacing={0} sx={{ background: "#FFFFFF" }}>
         <Grid item xs={12} md={1} mb={1} sx={{ margin: 1 }}>
           <Typography sx={{ fontSize: 20 }} color="text.primary" gutterBottom>
-            LUNC/USDT
+            {symbol}
           </Typography>
         </Grid>
         <Divider orientation="vertical" flexItem sx={{ minHeight: 20 }} />
@@ -47,7 +49,7 @@ export const CoinPrice = () => {
         <Divider orientation="vertical" flexItem sx={{ minHeight: 20 }} />
         <Grid item xs={12} md={1} mb={1} sx={{ margin: 1 }}>
           <Typography sx={{ fontSize: 12 }} color="text.secondary" gutterBottom>
-            Supply(LUNC)
+            Supply({denom})
           </Typography>
           <Typography sx={{ fontSize: 12 }} color="text.primary" gutterBottom>
             {typeof coin?.Supply === "number"
