@@ -61,7 +61,7 @@ export const ChartCandle = () => {
     }
 
     socket.on("candlestick", (list) => {
-      const candles = list.map((k) => {
+      const candles = list?.map((k) => {
         return new candle(k._id.time, k.open, k.high, k.low, k.close);
       });
 
@@ -98,7 +98,7 @@ export const ChartCandle = () => {
               value={symbol}
               onChange={onSymbolChange}
             >
-              {listSymbol.map((i) => {
+              {listSymbol?.map((i) => {
                 return (
                   <MenuItem value={i.Denom}>
                     {i.Denom.replace("/", "")}

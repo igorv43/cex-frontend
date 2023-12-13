@@ -108,7 +108,7 @@ export const Orders: React.FC<Props> = ({ rows }) => {
               <Table stickyHeader aria-label="sticky table" size="small">
                 <TableHead>
                   <TableRow>
-                    {columns.map((column) => (
+                    {columns?.map((column) => (
                       <TableCell
                         key={column.id}
                         align={column.align}
@@ -123,11 +123,11 @@ export const Orders: React.FC<Props> = ({ rows }) => {
                 <TableBody>
                   {rows
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row: any) => {
+                    ?.map((row: any) => {
                       return (
                         <>
                           <TableRow hover key={row._id}>
-                            {columns.map((column) => {
+                            {columns?.map((column) => {
                               const value = row[column.id];
                               return (
                                 <TableCell key={column.id} align={column.align}>

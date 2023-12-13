@@ -66,7 +66,7 @@ export const Trade = () => {
         </TableHead>
         <TableBody>
           {market
-            ? market.map((row) => (
+            ? market?.map((row) => (
                 <TableRow
                   key={countMark++}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
