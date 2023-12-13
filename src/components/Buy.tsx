@@ -171,6 +171,7 @@ export const Buy = () => {
               variant="outlined"
               color={inputEvent.buttonColorLimit}
               onClick={handleChangeTypeLimit}
+              disabled={autheticated ? errInput.input : true}
             >
               Limit
             </Button>{" "}
@@ -179,6 +180,7 @@ export const Buy = () => {
               variant="outlined"
               color={inputEvent.buttonColorMarket}
               onClick={handleChangeTypeMarket}
+              disabled={autheticated ? errInput.input : true}
             >
               Market
             </Button>{" "}
@@ -187,6 +189,7 @@ export const Buy = () => {
               color="info"
               variant="contained"
               onClick={handleClickOpen}
+              disabled={autheticated ? errInput.input : true}
             >
               Swap
             </Button>
@@ -246,6 +249,13 @@ export const Buy = () => {
                   : null}{" "}
                 {denom}
               </FormHelperText>
+              <FormHelperText id="component-helper-text">
+                Est. Fee{" "}
+                {typeof amountPair === "number"
+                  ? (amountPair * coin?.Fee).toLocaleString("en-IN")
+                  : null}{" "}
+                {denom}
+              </FormHelperText>
             </Box>
           </Grid>
         </Grid>
@@ -255,7 +265,7 @@ export const Buy = () => {
           variant="contained"
           color="success"
           sx={{ mt: 3, mb: 2 }}
-          disabled={autheticated ? errInput.input : autheticated}
+          disabled={autheticated ? errInput.input : true}
         >
           Buy {denom}
         </Button>

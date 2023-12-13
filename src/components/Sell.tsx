@@ -22,9 +22,10 @@ export const Sell = () => {
   const { sell } = useMarket();
   const [market, setMarket] = useState({});
   const [valueInput, setValueInput] = useState(0);
-  const [typeN, setTypeN] = useState("limit");
+
   const [valueInputPrice, setValueInputPrice] = useState(0);
   const { symbol, denom } = useContext(coinContex);
+
   const [inputEvent, setInputEvent] = useState({
     label: "USDT price",
     variant: "filled" as any,
@@ -178,6 +179,7 @@ export const Sell = () => {
               variant="outlined"
               color={inputEvent.buttonColorLimit}
               onClick={handleChangeTypeLimit}
+              disabled={autheticated ? errInput.input : true}
             >
               Limit
             </Button>{" "}
@@ -186,6 +188,7 @@ export const Sell = () => {
               variant="outlined"
               color={inputEvent.buttonColorMarket}
               onClick={handleChangeTypeMarket}
+              disabled={autheticated ? errInput.input : true}
             >
               Market
             </Button>{" "}
@@ -194,6 +197,7 @@ export const Sell = () => {
               color="info"
               variant="contained"
               onClick={handleClickOpenSwap}
+              disabled={autheticated ? errInput.input : true}
             >
               Swap
             </Button>{" "}
@@ -202,6 +206,7 @@ export const Sell = () => {
               color="success"
               variant="contained"
               onClick={handleClickOpen}
+              disabled={autheticated ? errInput.input : true}
             >
               Withdraw
             </Button>
@@ -252,11 +257,17 @@ export const Sell = () => {
                 helperText={errInput.text}
                 value={valueInput}
               />
-
               <FormHelperText id="component-helper-text">
                 Max. Sell{" "}
                 {typeof amountPair === "number"
                   ? amountPair.toLocaleString("en-IN")
+                  : null}{" "}
+                USDT
+              </FormHelperText>
+              <FormHelperText id="component-helper-text">
+                Est. Fee{" "}
+                {typeof amountPair === "number"
+                  ? (amountPair * coin?.Fee).toLocaleString("en-IN")
                   : null}{" "}
                 USDT
               </FormHelperText>
@@ -269,7 +280,7 @@ export const Sell = () => {
           variant="contained"
           color="error"
           sx={{ mt: 3, mb: 2 }}
-          disabled={autheticated ? errInput.input : autheticated}
+          disabled={autheticated ? errInput.input : true}
         >
           Sell {denom}
         </Button>
