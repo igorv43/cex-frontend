@@ -3,20 +3,22 @@ import { createTheme } from "@mui/material/styles";
 import { enUS } from "@mui/material/locale";
 
 // A custom theme for this app
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#556cd6",
+const theme = createTheme(
+  {
+    palette: {
+      primary: {
+        main: "#556cd6",
+      },
+      secondary: {
+        main: "#19857b",
+      },
+      error: {
+        main: red.A400,
+      },
+      background: { default: "#EFF2EF" },
     },
-    secondary: {
-      main: "#19857b",
-    },
-    error: {
-      main: red.A400,
-    },
-    background: { default: "#EFF2EF" },
   },
-  enUS,
-});
+  enUS
+);
 
 export default theme;

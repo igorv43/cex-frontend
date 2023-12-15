@@ -7,9 +7,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
-import { Card, CardContent } from "@mui/material";
+import { Card, CardContent, Link } from "@mui/material";
 import { context } from "../context/UserContext";
-import { useContext } from "react";
+import { useContext, useState } from "react";
+import OrdersExecution from "./OrdersExecution";
 interface Column {
   id: "Denom" | "Amount" | "Price" | "Type" | "Status" | "createdAt";
   label: string;
@@ -88,6 +89,8 @@ export const Orders: React.FC<Props> = ({ rows }) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const { autheticated } = useContext(context);
+  const [open, setOpen] = useState(false);
+  const [id, setId] = useState();
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
@@ -97,6 +100,10 @@ export const Orders: React.FC<Props> = ({ rows }) => {
   ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
   };
   let countRows = 0;
   return (
@@ -129,13 +136,37 @@ export const Orders: React.FC<Props> = ({ rows }) => {
                           <TableRow hover key={row._id}>
                             {columns?.map((column) => {
                               const value = row[column.id];
-                              return (
-                                <TableCell key={column.id} align={column.align}>
-                                  {column.format && typeof value === "number"
-                                    ? column.format(value)
-                                    : value}
-                                </TableCell>
-                              );
+
+                              if (column.label === "Denom") {
+                                return (
+                                  <TableCell
+                                    key={column.id}
+                                    align={column.align}
+                                  >
+                                    <Link
+                                      component="button"
+                                      variant="body2"
+                                      onClick={() => {
+                                        setOpen(true);
+                                        setId(row._id);
+                                      }}
+                                    >
+                                      {value}
+                                    </Link>
+                                  </TableCell>
+                                );
+                              } else {
+                                return (
+                                  <TableCell
+                                    key={column.id}
+                                    align={column.align}
+                                  >
+                                    {column.format && typeof value === "number"
+                                      ? column.format(value)
+                                      : value}
+                                  </TableCell>
+                                );
+                              }
                             })}
                           </TableRow>
                         </>
@@ -159,6 +190,7 @@ export const Orders: React.FC<Props> = ({ rows }) => {
       ) : (
         ""
       )}
+      <OrdersExecution handleClose={handleClose} open={open} id={id} />
     </>
   );
 };

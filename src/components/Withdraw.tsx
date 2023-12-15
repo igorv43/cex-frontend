@@ -117,7 +117,7 @@ const Withdraw: React.FC<Props> = ({ handleClickOpen, handleClose, open }) => {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleClose}>Close</Button>
           <Button onClick={handleSubmit}>Send</Button>
         </DialogActions>
       </Dialog>

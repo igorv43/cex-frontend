@@ -1,19 +1,20 @@
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import FormHelperText from "@mui/material/FormHelperText";
-import Card from "@mui/material/Card";
+
 import Box from "@mui/material/Box";
-import CardContent from "@mui/material/CardContent";
+
 import Grid from "@mui/material/Grid";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { context } from "../context/UserContext";
 import useMarket from "../hooks/useMarket";
 import { context as socketMarketContex } from "../context/SocketMarketContext";
 import useCoinUser from "../hooks/useCoinUser";
-import Divider from "@mui/material/Divider";
+
 import Withdraw from "./Withdraw";
 import Swap from "./Swap";
 import { context as coinContex } from "../context/CoinContext";
+
 export const Sell = () => {
   const { findDenom } = useCoinUser();
   const [open, setOpen] = useState(false);
@@ -222,6 +223,7 @@ export const Sell = () => {
                   : null}{" "}
                 {denom}
               </FormHelperText>
+
               <TextField
                 id="price"
                 name="price"

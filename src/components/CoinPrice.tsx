@@ -103,6 +103,7 @@ export const CoinPrice = () => {
               : null}
           </Typography>
         </Grid>
+
         <Divider orientation="vertical" flexItem sx={{ minHeight: 20 }} />
         <Grid item xs={12} md={4} mb={1} sx={{ margin: 1 }}>
           <Login values={""} />

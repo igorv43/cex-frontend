@@ -18,6 +18,9 @@ import { context } from "../context/UserContext";
 import { context as socketMarketContex } from "../context/SocketMarketContext";
 import Menssage from "./Message";
 import useCoinUser from "../hooks/useCoinUser";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { enUS } from "@mui/material/locale";
+
 type Props = {
   handleClickOpen: () => void;
   handleClose: () => void;
@@ -38,6 +41,7 @@ const Swap: React.FC<Props> = ({
     offerDenom: "",
     offerAmount: null,
   });
+  const themeUS = createTheme({}, enUS);
   const { findDenom } = useCoinUser();
   const { switchCurrency } = useContext(context);
   const [maxAvailable, setMaxAvailable] = useState("");
@@ -70,7 +74,11 @@ const Swap: React.FC<Props> = ({
   };
   const handleAvailableClick = () => {
     setMaxAvailable(coinPair2?.Amount.toLocaleString("en-IN").replace(",", ""));
-
+    console.log(
+      "amount dec",
+      coinPair2,
+      coinPair2?.Amount.toLocaleString("en-IN").replace(",", "")
+    );
     if (offerDenom === "USDT") {
       setMaxAvailable(
         coinPair1?.Amount.toLocaleString("en-IN").replace(",", "")
@@ -128,23 +136,25 @@ const Swap: React.FC<Props> = ({
           <br></br>
           <FormControl variant="standard" sx={{ width: "100%" }}>
             <InputLabel htmlFor="offerAmount">Amount</InputLabel>
-            <Input
-              fullWidth
-              id="offerAmount"
-              type="number"
-              name="offerAmount"
-              autoFocus
-              onChange={handleChangeAmount}
-              value={maxAvailable}
-              endAdornment={
-                <InputAdornment position="end">
-                  {" "}
-                  <Button size="small" onClick={handleAvailableClick}>
-                    Max. Available
-                  </Button>
-                </InputAdornment>
-              }
-            />
+            <ThemeProvider theme={themeUS}>
+              <Input
+                fullWidth
+                id="offerAmount"
+                type="number"
+                name="offerAmount"
+                autoFocus
+                onChange={handleChangeAmount}
+                value={maxAvailable}
+                endAdornment={
+                  <InputAdornment position="end">
+                    {" "}
+                    <Button size="small" onClick={handleAvailableClick}>
+                      Max. Available
+                    </Button>
+                  </InputAdornment>
+                }
+              />
+            </ThemeProvider>
           </FormControl>
           <br></br>
           <br></br>
