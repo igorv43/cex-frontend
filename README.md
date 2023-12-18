@@ -6,3 +6,10 @@ CEX EXCLUSIVE TESTNET is a system designed to simulate transactions akin to buyi
 Additionally, familiarity with React, Material UI, Socket.io, and Node.js (TypeScript, JavaScript) is necessary. Install Node.js,VSCode
 
 Before proceeding with the installation, it's necessary to first install the API service. Follow the steps outlined at https://github.com/igorv43/cex-backend.
+
+Download the repository: git clone https://github.com/igorv43/cex-frontend.git, then follow these commands: cd cex-frontend npm install code .
+
+Edit: src/config.js
+
+If you need to change the server path for the API, it's set to http://localhost:5000 by default.
+
