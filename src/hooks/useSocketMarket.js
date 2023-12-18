@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { io } from "socket.io-client";
 import candle from "../utils/candle";
-const socket = io("http://localhost:5000");
+import APIURL from "../config";
+const socket = io(APIURL);
 socket.on("connect", () => {
   console.log("conectado");
 });

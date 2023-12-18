@@ -33,7 +33,7 @@ export default function useAuth() {
     }
   }, []);
   async function register(user) {
-    let msgText = "sucessc";
+    let msgText = "success";
     let msgType = "success";
     try {
       const data = await api.post("/user/register", user).then((response) => {

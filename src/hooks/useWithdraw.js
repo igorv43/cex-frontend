@@ -6,7 +6,7 @@ export default function useWithdraw() {
 
   const [token] = useState(localStorage.getItem("token") || "");
   async function sendWithdraw(obj) {
-    let msgText = "sucessc";
+    let msgText = "success";
     let msgType = "success";
 
     try {
@@ -16,7 +16,6 @@ export default function useWithdraw() {
         })
         .then(async (response) => {
           setFlashMessage(msgText, msgType);
-          //return { data: response?.data };
         });
       return data;
     } catch (error) {
