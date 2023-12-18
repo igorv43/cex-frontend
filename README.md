@@ -13,3 +13,6 @@ Edit: src/config.js
 
 If you need to change the server path for the API, it's set to http://localhost:5000 by default.
 
+After completing all these configurations, enter the following command:
+
+npm run start
