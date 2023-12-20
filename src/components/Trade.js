@@ -17,7 +17,7 @@ export const Trade = () => {
   const { symbol, denom } = useContext(coinContex);
   useEffect(() => {
     executePriceMarket(symbol);
-  }, []);
+  }, [symbol]);
 
   const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {

@@ -90,17 +90,22 @@ export default function useSocketMarket() {
     if (denom != null) {
       socket.emit("market_" + denom, { Denom: denom });
       socket.on("market_" + denom, (msg) => {
-        if (globalMarket.length === 0) {
-          globalMarket = msg;
-          setMarket(msg);
-        } else {
-          setMarket(null);
-          globalMarket.unshift(msg[0]);
-          if (globalMarket.length > 15) {
-            globalMarket.pop();
-          }
+        console.log("igor", msg.length);
+        if (msg.length > 0) {
+          if (globalMarket.length === 0) {
+            globalMarket = msg;
+            setMarket(msg);
+          } else {
+            setMarket(null);
+            globalMarket.unshift(msg[0]);
+            if (globalMarket.length > 15) {
+              globalMarket.pop();
+            }
 
-          setMarket(globalMarket);
+            setMarket(globalMarket);
+          }
+        } else {
+          setMarket([]);
         }
       });
     }

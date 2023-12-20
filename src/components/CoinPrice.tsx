@@ -14,7 +14,7 @@ export const CoinPrice = () => {
 
   useEffect(() => {
     executePriceCoin(symbol);
-  }, []);
+  }, [symbol]);
 
   return (
     <>
