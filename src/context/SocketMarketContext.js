@@ -12,6 +12,7 @@ function SocketMarketProvider({ children }) {
   const {
     executePriceMarket,
     market,
+    setMarket,
     executePriceCoin,
     coin,
     statusTrade,
@@ -23,6 +24,7 @@ function SocketMarketProvider({ children }) {
       value={{
         executePriceMarket,
         market,
+        setMarket,
         executePriceCoin,
         coin,
         coinPair1,

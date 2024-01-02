@@ -10,6 +10,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import { context } from "../context/CoinContext";
+import { context as socketMarketContex } from "../context/SocketMarketContext";
 const socket = io("http://localhost:5000");
 
 /**
@@ -22,12 +23,15 @@ export const ChartCandle = () => {
   const [interval, setInterval] = useState("15_minute");
   const [candlestick, setCandlestick] = useState([]);
   const [listSymbol, setListSymbol] = useState([]);
+  const { executePriceMarket, setMarket } = useContext(socketMarketContex);
   const { find, symbol, setSymbol, denom, setDenom, splitSymbol } =
     useContext(context);
   function onSymbolChange(event) {
     setSymbol(event.target.value);
     setDenom(splitSymbol(event.target.value));
     setCandlestick([]);
+    // setMarket([]);
+    executePriceMarket(event.target.value);
   }
   function onIntervalChange(event) {
     socket.emit("uncandlestick", {

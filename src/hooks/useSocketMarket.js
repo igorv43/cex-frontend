@@ -88,18 +88,24 @@ export default function useSocketMarket() {
   }
   function executePriceMarket(denom) {
     if (denom != null) {
+      if (globalMarket.filter((value) => value.Denom != denom).length > 0) {
+        globalMarket = [];
+        setMarket(null);
+      }
+
       socket.emit("market_" + denom, { Denom: denom });
       socket.on("market_" + denom, (msg) => {
-        console.log("igor", msg.length);
         if (msg.length > 0) {
           if (globalMarket.length === 0) {
             globalMarket = msg;
             setMarket(msg);
           } else {
             setMarket(null);
-            globalMarket.unshift(msg[0]);
-            if (globalMarket.length > 15) {
-              globalMarket.pop();
+            if (!globalMarket.includes(msg[0])) {
+              globalMarket.unshift(msg[0]);
+              if (globalMarket.length > 15) {
+                globalMarket.pop();
+              }
             }
 
             setMarket(globalMarket);
@@ -114,6 +120,7 @@ export default function useSocketMarket() {
   return {
     executePriceMarket,
     market,
+    setMarket,
     executePriceCoin,
     coin,
     statusTrade,
